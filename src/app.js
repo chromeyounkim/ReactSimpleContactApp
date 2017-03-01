@@ -65,11 +65,11 @@ class Contacts extends React.Component {
       }
       
       this.setState({
-        data: update(this.state, {
-          data: {
-            $splice: [[this.selectedKey, 1]]
+        data: update(this.state.data, 
+           {
+           $splice: [[this.state.selectedKey, 1]]
           }
-        }),
+        ),
         selectedKey: -1,
         selected: {
           name: "",
@@ -82,7 +82,7 @@ class Contacts extends React.Component {
       this.setState({
         data: update(this.state.data, 
           { 
-            [this.selectedKey]: {
+            [this.state.selectedKey]: {
               name: {$set: name},
               phone: {$set: phone}
             } 
@@ -163,12 +163,18 @@ class ContactCreator extends React.Component {
     });
   }
   
+  handleChange(e){
+      var value = {};
+      value[e.target.name] = e.target.value;
+      this.setState(value);
+   }
+  
   render() {
     return(
       <div>
         <p>
-          <input type="text" name="name" placeholder="name" value={this.state.name} />
-          <input type="text" name="phone" placeholder="phone" value={this.state.phone} />
+          <input type="text" name="name" placeholder="name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
+          <input type="text" name="phone" placeholder="phone" value={this.state.phone} onChange={this.handleChange.bind(this)} />
           <button onClick={this.handleClick.bind(this)}>INSERT</button>
        </p>
       </div>
@@ -201,6 +207,12 @@ class ContactEditor extends React.Component {
     };
   }
   
+  handleChange(e){
+      var value = {};
+      value[e.target.name] = e.target.value;
+      this.setState(value);
+   }
+  
   handleClick() {
     if (!this.props.isSelected) return;
     this.props.onEdit(this.state.name, this.state.phone);
@@ -220,12 +232,16 @@ class ContactEditor extends React.Component {
                     <input type="text"
                         name="name"
                         placeholder="name"
-                        value={this.state.name}/>
+                        value={this.state.name}
+                        onChange={this.handleChange.bind(this)}        
+                    />
 
                     <input type="text"
                         name="phone"
                         placeholder="phone"
-                        value={this.state.phone}/>
+                        value={this.state.phone}
+                        onChange={this.handleChange.bind(this)}
+                      />
                     <button onClick={this.handleClick.bind(this)}>
                         Edit
                     </button>
